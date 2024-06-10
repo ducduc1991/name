@@ -1,0 +1,117 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "DucToiChoi", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+
+-- player tab
+
+local PlayerTab = Window:MakeTab({
+ Name = "chạy ngay đi",
+ Icon = "rbxassetid://4483345998",
+ PremiumOnly = false
+})
+
+local Section = PlayerTab:AddSection({
+ Name = "Movement"
+})
+
+PlayerTab:AddSlider({
+ Name = "Walkspeed",
+ Min = 16,
+ Max = 500,
+ Default = 16,
+ Color = Color3.fromRGB(255,255,255),
+ Increment = 1,
+ ValueName = "WS",
+ Callback = function(Value)
+  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+ end    
+})
+
+PlayerTab:AddSlider({
+ Name = "Jump Height",
+ Min = 16,
+ Max = 500,
+ Default = 5,
+ Color = Color3.fromRGB(255,255,255),
+ Increment = 1,
+ ValueName = "Height",
+ Callback = function(Value)
+  game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+ end    
+})
+
+
+local OtherTab = Window:MakeTab({
+ Name = "nhiệm vụ đây này",
+ Icon = "rbxassetid://4483345998",
+ PremiumOnly = false
+})
+
+local Section = OtherTab:AddSection({
+ Name = "Other"
+})
+
+
+OtherTab:AddButton({
+ Name = "Main Mission",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-103.248566, 226.217377, 84.2400894, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Boba Shop",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(55.5257607, 227.075455, 136.059631, -0.139203906, 0, 0.99026376, 0, 1, 0, -0.99026376, 0, -0.139203906)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Soccer Field",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(207.529053, 228.116364, 300.336792, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Beach Club",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2.74926758, 202.130707, -388.868408, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Vonda",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(260.432587, 225.878632, 59.8830032, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Rami Restaurant",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-194.146683, 227.905106, 128.473251, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Pho Shop",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-165.258209, 227.311447, -45.0438957, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Gun Shop",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-116.023804, 224.640625, 109.120186, -0.0871315002, 0, 0.996196866, 0, 1, 0, -0.996196866, 0, -0.0871315002)
+   end    
+})
+
+OtherTab:AddButton({
+ Name = "Casino",
+ Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-140.22403, 224.526001, -116.833389, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+   end    
+})
