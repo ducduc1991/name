@@ -10,7 +10,7 @@
     --homeImage: url('https://imgur.com/eItxuAq.png');
     --homeImageSize: cover;
     --backgroundColor: #0d0d0d;
-    --backgroundImage: url('https://imgur.com/qhBghXt.png');
+    --backgroundImage: url('');
     --backgroundPosition: center;
     --backgroundSize: cover;
     --backgroundRepeat: no-repeat;
