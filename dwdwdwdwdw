@@ -1,62 +1,37 @@
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
+local Player = game:GetService("Players").LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
 
-local player = Players.LocalPlayer
-local macro = {}
-local isRecording = false
-local startTime = 0
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-local function setupGUI()
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "MacroGUI"
-    screenGui.ResetOnSpawn = false
-    screenGui.Parent = player:WaitForChild("PlayerGui")
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 200, 0, 100)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
+Frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+Frame.Parent = ScreenGui
 
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 200, 0, 100)
-    frame.Position = UDim2.new(1, -220, 0, 20)
-    frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    frame.Parent = screenGui
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Size = UDim2.new(1, 0, 0.5, 0)
+TextLabel.BackgroundTransparency = 1
+TextLabel.TextColor3 = Color3.new(1, 1, 1)
+TextLabel.Text = "Tốc độ chạy: 16"
+TextLabel.Parent = Frame
 
-    local recordButton = Instance.new("TextButton")
-    recordButton.Size = UDim2.new(0, 180, 0, 40)
-    recordButton.Position = UDim2.new(0.5, -90, 0, 10)
-    recordButton.BackgroundColor3 = Color3.new(0, 0.7, 0)
-    recordButton.Text = "Start Recording"
-    recordButton.TextColor3 = Color3.new(1, 1, 1)
-    recordButton.Parent = frame
+local TextBox = Instance.new("TextBox")
+TextBox.Size = UDim2.new(1, -20, 0.3, 0)
+TextBox.Position = UDim2.new(0, 10, 0.6, 0)
+TextBox.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
+TextBox.TextColor3 = Color3.new(1, 1, 1)
+TextBox.Text = "16"
+TextBox.Parent = Frame
 
-    recordButton.MouseButton1Click:Connect(function()
-        if not isRecording then
-            macro = {}
-            isRecording = true
-            startTime = tick()
-            recordButton.Text = "Stop Recording"
-            recordButton.BackgroundColor3 = Color3.new(0.7, 0, 0)
-            print("Recording started")
-        else
-            isRecording = false
-            recordButton.Text = "Start Recording"
-            recordButton.BackgroundColor3 = Color3.new(0, 0.7, 0)
-            print("Recording stopped")
+TextBox.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local newSpeed = tonumber(TextBox.Text)
+        if newSpeed and newSpeed > 0 then
+            Humanoid.WalkSpeed = newSpeed
+            TextLabel.Text = "Tốc độ chạy: " .. newSpeed
         end
-    end)
-
-    local playButton = Instance.new("TextButton")
-    playButton.Size = UDim2.new(0, 180, 0, 40)
-    playButton.Position = UDim2.new(0.5, -90, 0, 55)
-    playButton.BackgroundColor3 = Color3.new(0, 0, 0.7)
-    playButton.Text = "Play Macro"
-    playButton.TextColor3 = Color3.new(1, 1, 1)
-    playButton.Parent = frame
-
-    playButton.MouseButton1Click:Connect(function()
-        if not isRecording and #macro > 0 then
-            print("Playing macro")
-            for _, action in ipairs(macro) do
-                if action.inputType == Enum.UserInputType.MouseButton1 then
-                    mouse1press()
-                    wait(0.1)
-                    mouse1release()
-                elseif action.inputType == Enum.UserInputType.MouseMovement then
-                    mousemove
+    end
+end)
