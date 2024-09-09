@@ -1,0 +1,107 @@
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local StarterGui = game:GetService("StarterGui")
+
+local macro = {}
+local isRecording = false
+local startTime = 0
+local shouldRecord = true  -- Flag to determine record or play mode
+
+local function createButton(name, position, color)
+    local button = Instance.new("TextButton")
+    button.Name = name
+    button.Size = UDim2.new(0, 100, 0, 50)
+    button.Position = position
+    button.BackgroundColor3 = color
+    button.Text = name
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.TextScaled = true
+    button.Parent = screenGui
+    return button
+end
+
+local function startRecording()
+    macro = {}
+    isRecording = true
+    startTime = tick()
+    print("Macro recording started")
+end
+
+local function stopRecording()
+    isRecording = false
+    print("Macro recording stopped")
+end
+
+local function playbackMacro()
+    for _, action in ipairs(macro) do
+        if action.inputType == "MouseButton1" then
+            mouse1press()
+            wait(0.1)
+            mouse1release()
+        elseif action.inputType == "MouseMovement" then
+            mousemoveabs(action.position.X, action.position.Y)
+        end
+        wait(action.timestamp - (action.timestamp > 0 and macro[_ - 1].timestamp or 0))
+    end
+    print("Macro playback completed")
+end
+
+local function setupGUI()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "MacroGUI"
+    screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local toggleButton = createButton("Toggle", UDim2.new(0, 10, 0, 10), Color3.new(0, 0.5, 0))
+    local recordButton = createButton("Record", UDim2.new(0, 10, 0, 70), Color3.new(1, 0, 0))
+    local playButton = createButton("Play", UDim2.new(0, 10, 0, 130), Color3.new(0, 0, 1))
+
+    toggleButton.MouseButton1Click:Connect(function()
+        shouldRecord = not shouldRecord
+        toggleButton.Text = shouldRecord and "Record Mode" or "Play Mode"
+        print(shouldRecord and "Switched to record mode" or "Switched to play mode")
+    end)
+
+    recordButton.MouseButton1Click:Connect(function()
+        if shouldRecord then
+            if not isRecording then
+                startRecording()
+                recordButton.Text = "Stop"
+            else
+                stopRecording()
+                recordButton.Text = "Record"
+            end
+        else
+            print("Cannot record in play mode")
+        end
+    end)
+
+    playButton.MouseButton1Click:Connect(function()
+        if not shouldRecord then
+            playbackMacro()
+        else
+            print("Cannot play in record mode")
+        end
+    end)
+end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and isRecording and shouldRecord then
+        table.insert(macro, {
+            inputType = input.UserInputType.Name,
+            timestamp = tick() - startTime
+        })
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input, gameProcessed)
+    if not gameProcessed and isRecording and shouldRecord and input.UserInputType == Enum.UserInputType.MouseMovement then
+        table.insert(macro, {
+            inputType = "MouseMovement",
+            position = input.Position,
+            timestamp = tick() - startTime
+        })
+    end
+end)
+
+setupGUI()
+print("Macro script loaded. Use on-screen buttons to control the macro.")
